@@ -2,12 +2,19 @@ import pygame
 import ctypes
 import time
 import random
+import sys
+from AppKit import NSScreen
 
 # Create a class to save screen variables
-class Screen:
-    user32 = ctypes.windll.user32
-    width = user32.GetSystemMetrics(0)
-    height = user32.GetSystemMetrics(1)
+if sys.platform == 'win32':
+    class Screen:
+        user32 = ctypes.windll.user32
+        width = user32.GetSystemMetrics(0)
+        height = user32.GetSystemMetrics(1)
+else:
+    class Screen:
+        width = NSScreen.mainScreen().frame().size.width
+        height = NSScreen.mainScreen().frame().size.height
 
 class Window:
     width = Screen.width / 2
@@ -21,7 +28,7 @@ class Sound:
     muted = False
     muteButton = False
 
-    pygame.mixer.music.load('sounds/music.mp3')
+    pygame.mixer.music.load('sounds/music.ogg')
     pygame.mixer.music.set_volume(0.2)
     hit = pygame.mixer.Sound('sounds/hit.wav')
     jump = pygame.mixer.Sound('sounds/jump.wav')
